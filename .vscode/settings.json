@@ -1,0 +1,15 @@
+{
+  "editor.defaultFormatter": "rubocop.vscode-rubocop",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+	"editor.autoClosingQuotes": "always",
+  "editor.autoIndent": "advanced",
+  "[ruby]": {
+    "editor.defaultFormatter": "Shopify.ruby-lsp",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+	},
+	"[yaml]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
+}

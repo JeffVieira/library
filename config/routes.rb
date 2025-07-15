@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resources :sessions, only: [:index, :show, :destroy]
 
       resources :users
+      resources :books
     end
   end
   # Defines the root path route ("/")

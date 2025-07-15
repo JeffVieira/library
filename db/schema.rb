@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_15_140810) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_15_165851) do
+  create_table "books", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "author", null: false
+    t.string "isbn", null: false
+    t.integer "copies_available", default: 0
+    t.string "genre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "user_agent"
@@ -26,6 +36,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_15_140810) do
     t.boolean "verified", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "role", default: "member"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

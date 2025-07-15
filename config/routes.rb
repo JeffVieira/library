@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
       post "sign_in", to: "sessions#create"
       post "sign_up", to: "registrations#create"
-      resources :sessions, only: [:index, :show, :destroy]
+      delete "sign_out", to: "sessions#destroy"
 
       resources :users
       resources :books

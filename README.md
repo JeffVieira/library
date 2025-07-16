@@ -76,9 +76,9 @@ Authentication
   - Logout: `DELETE /api/v1/sign_out`
 
 Books
-  - List Books: `GET /api/v1/books`
+  - List Books: `GET /api/v1/books?query=`
   - Create Books: `POST /api/v1/books`
-  - Edit Books: `PATCH /api/v1/books/:id`
+  - Update Books: `PATCH /api/v1/books/:id`
   - Delete Books: `DELETE /api/v1/books/:id`
   - Borrow Book: `POST /api/v1/borrows`
   - Return Book: `PATCH /api/v1/return_book`
@@ -90,7 +90,7 @@ Dashboards
 ## Postman Collection
 
 You can test the API using the Postman collection:
-[Postman Workspace](https://web.postman.co/workspace/ccc6e88f-64af-47ed-87ba-7d80727dbba1)
+[Postman Workspace](https://app.getpostman.com/join-team?invite_code=77b2e89aa65717344362b76bb01184b62de3f1a5fc10042936dee565ea59ed6d&target_code=cb48665bc2ab8eded69f310d259fca24)
 
 ---
 

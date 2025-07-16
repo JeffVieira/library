@@ -13,7 +13,6 @@ Rails.application.routes.draw do
       post "sign_up", to: "registrations#create"
       delete "sign_out", to: "sessions#destroy"
 
-      resources :users
       resources :books
       resources :borrows, only: [:create]
       resources :dashboards, only: [:index]

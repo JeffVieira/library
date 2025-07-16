@@ -1,4 +1,7 @@
 class Book < ApplicationRecord
+	has_many :borrows, dependent: :destroy
+	has_many :users, through: :borrows
+
 	validates :isbn, presence: true, uniqueness: true
 	validates :title, presence: true, uniqueness: true, length: { minimum: 3 }
 	validates :author, presence: true, length: { minimum: 3 }

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
       resources :users
       resources :books
+      resources :borrows, only: [:create]
     end
   end
   # Defines the root path route ("/")

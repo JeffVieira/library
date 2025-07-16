@@ -38,8 +38,8 @@ This is a Ruby on Rails-based Library Management System that allows users to bor
 
 1. **Clone the Repository**:
 ```bash
-  git clone https://github.com/your-repo/library-management.git
-  cd library-management
+  git clone https://github.com/JeffVieira/library.git
+  cd library
 ```
 
 2. **Install Dependencies:**
@@ -71,17 +71,21 @@ bundle exec rspec
 ## API Endpoints
 
 Authentication
-  - Login: POST /api/v1/sign_in
-  - Logout: DELETE /api/v1/sign_out
+  - SignUp `POST /api/v1/sign_up`
+  - Login: `POST /api/v1/sign_in`
+  - Logout: `DELETE /api/v1/sign_out`
 
 Books
-  - List Books: GET /api/v1/books
-  - Borrow Book: POST /api/v1/borrows
-  - Return Book: PATCH /api/v1/borrows/:id
+  - List Books: `GET /api/v1/books`
+  - Create Books: `POST /api/v1/books`
+  - Edit Books: `PATCH /api/v1/books/:id`
+  - Delete Books: `DELETE /api/v1/books/:id`
+  - Borrow Book: `POST /api/v1/borrows`
+  - Return Book: `PATCH /api/v1/return_book`
 
 Dashboards
-  - Admin Dashboard: GET /api/v1/dashboards (Admin only)
-  - Member Dashboard: GET /api/v1/dashboards (Member only)
+  - Admin Dashboard: `GET /api/v1/dashboards` (Admin only)
+  - Member Dashboard: `GET /api/v1/dashboards` (Member only)
 
 ## Postman Collection
 

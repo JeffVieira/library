@@ -28,8 +28,8 @@ This is a Ruby on Rails-based Library Management System that allows users to bor
 
 ## Requirements
 
-- **Ruby Version**: `3.2.2` (or update `.ruby-version` if needed)
-- **Rails Version**: `7.x`
+- **Ruby Version**: `3.4.4` (or update `.ruby-version` if needed)
+- **Rails Version**: `8.x`
 - **Database**: SQLite3 (default) or PostgreSQL for production.
 
 ---
@@ -70,12 +70,23 @@ bundle exec rspec
 
 ## API Endpoints
 
-Authentication
+**Users/access**
+```
+Admin/Librarian:
+email: admin@mail.com
+password: Adminpass123
+
+Member:
+email: member@mail.com
+password: Memberpass123
+```
+
+**Authentication**
   - SignUp `POST /api/v1/sign_up`
   - Login: `POST /api/v1/sign_in`
   - Logout: `DELETE /api/v1/sign_out`
 
-Books
+**Books**
   - List Books: `GET /api/v1/books?query=`
   - Create Books: `POST /api/v1/books`
   - Update Books: `PATCH /api/v1/books/:id`
@@ -83,7 +94,7 @@ Books
   - Borrow Book: `POST /api/v1/borrows`
   - Return Book: `PATCH /api/v1/return_book`
 
-Dashboards
+**Dashboards**
   - Admin Dashboard: `GET /api/v1/dashboards` (Admin only)
   - Member Dashboard: `GET /api/v1/dashboards` (Member only)
 

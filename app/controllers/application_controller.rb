@@ -7,6 +7,10 @@ class ApplicationController < ActionController::API
 	before_action :set_current_request_details
 	before_action :authenticate
 
+	def pundit_user
+		Current.user
+	end
+
 	private
 		def authenticate
 			if session_record = authenticate_with_http_token { |token, _| Session.find_signed(token) }
@@ -22,6 +26,6 @@ class ApplicationController < ActionController::API
 		end
 
 		def user_not_authorized
-			redirect_to root_path, alert: "You're not authorized!"
+			render json: { error: "You're not authorized!" }, status: :forbidden
 		end
 end

@@ -14,6 +14,7 @@ module Api::V1
 
 		def create
 			@book = Book.new(book_params)
+			authorize @book
 
 			if @book.save
 				render json: @book, status: :created
@@ -24,6 +25,7 @@ module Api::V1
 
 		def update
 			@book = Book.find(params[:id])
+			authorize @book
 			if @book.update(book_params)
 				render json: @book, status: :ok
 			else
@@ -33,6 +35,7 @@ module Api::V1
 
 		def destroy
 			@book = Book.find(params[:id])
+			authorize @book
 			if @book.destroy
 				head :no_content
 			else

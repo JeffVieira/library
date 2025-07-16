@@ -14,6 +14,8 @@ module Api::V1
 		end
 
 		def destroy
+			# ver aqui para ver se é necessário o reset do pundit
+			pundit_reset!
 			Current.session.destroy
 		end
 	end

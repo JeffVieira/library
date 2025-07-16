@@ -50,6 +50,24 @@ RSpec.describe Api::V1::BooksController, type: :request do
 				expect(response).to have_http_status(:unauthorized)
 			end
 		end
+
+		context 'when user has not permission' do
+			let(:user) { FactoryBot.create(:member_user) }
+			let(:headers) {  authorization_header(user) }
+
+			it "return unathorized" do
+				patch api_v1_book_path(book), params: {
+					title: "new book",
+					author: "Test Author",
+					genre: "Test Genre",
+					isbn: "1234567890",
+					copies_available: 5
+				}, headers: headers
+
+				expect(response).to have_http_status(:forbidden)
+				expect(JSON.parse(response.body)['error']).to eq("You're not authorized!")
+			end
+		end
 	end
 
 	describe "POST create" do
@@ -93,6 +111,24 @@ RSpec.describe Api::V1::BooksController, type: :request do
 				expect(response).to have_http_status(:unauthorized)
 			end
 		end
+
+		context 'when user has not permission' do
+			let(:user) { FactoryBot.create(:member_user) }
+			let(:headers) {  authorization_header(user) }
+
+			it "return unathorized" do
+				post api_v1_books_path, params: {
+					title: "new book",
+					author: "Test Author",
+					genre: "Test Genre",
+					isbn: "1234567890",
+					copies_available: 5
+				}, headers: headers
+
+				expect(response).to have_http_status(:forbidden)
+				expect(JSON.parse(response.body)['error']).to eq("You're not authorized!")
+			end
+		end
 	end
 
 	describe "DELETE destroy" do
@@ -110,6 +146,26 @@ RSpec.describe Api::V1::BooksController, type: :request do
 				delete api_v1_book_path(id: 9999), headers: headers
 
 				expect(response).to have_http_status(:not_found)
+			end
+		end
+
+		context 'when user is not authenticated' do
+			it "return unathorized" do
+				delete api_v1_book_path(book)
+
+				expect(response).to have_http_status(:unauthorized)
+			end
+		end
+
+		context 'when user has not permission' do
+			let(:user) { FactoryBot.create(:member_user) }
+			let(:headers) {  authorization_header(user) }
+
+			it "return unathorized" do
+				delete api_v1_book_path(book), headers: headers
+
+				expect(response).to have_http_status(:forbidden)
+				expect(JSON.parse(response.body)['error']).to eq("You're not authorized!")
 			end
 		end
 	end

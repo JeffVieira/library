@@ -16,6 +16,8 @@ Rails.application.routes.draw do
       resources :users
       resources :books
       resources :borrows, only: [:create]
+
+      patch "return_book", to: "borrows#update"
     end
   end
   # Defines the root path route ("/")

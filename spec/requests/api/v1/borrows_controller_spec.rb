@@ -46,4 +46,72 @@ RSpec.describe Api::V1::BorrowsController, type: :request do
 			end
 		end
 	end
+
+	describe "PATCH /return_book" do
+		context 'when user is authenticated' do
+			let(:user) { FactoryBot.create(:user) }
+			let(:book) { FactoryBot.create(:book, copies_available: 2) }
+			let!(:borrow) { FactoryBot.create(:borrow, user: user, book: book, returned: false) }
+			let(:headers) { authorization_header(user) }
+
+			it "marks a borrow as returned successfully" do
+				patch api_v1_return_book_path, params: {
+					book_id: book.id,
+					user_id: user.id
+				}, headers: headers
+
+				expect(response).to have_http_status(:ok)
+				expect(JSON.parse(response.body)['returned']).to eq(true)
+			end
+
+			it "returns unprocessable entity when borrow is not found" do
+				patch api_v1_return_book_path, params: {
+					book_id: book.id,
+					user_id: 9999 # Non-existent user
+				}, headers: headers
+
+				expect(response).to have_http_status(:not_found)
+				expect(JSON.parse(response.body)['error']).to eq("Borrow record not found")
+			end
+
+			it "returns unprocessable entity when borrow is already returned" do
+				borrow.update(returned: true)
+
+				patch api_v1_return_book_path, params: {
+					book_id: book.id,
+					user_id: user.id
+				}, headers: headers
+
+				expect(response).to have_http_status(:unprocessable_entity)
+				expect(JSON.parse(response.body)['error']).to eq("This book has already been returned")
+			end
+		end
+
+		context 'when user is not authenticated' do
+			it "returns unauthorized" do
+				patch api_v1_return_book_path, params: {
+					book_id: 1,
+					user_id: 1
+				}
+
+				expect(response).to have_http_status(:unauthorized)
+			end
+		end
+
+		context 'when user has no permission' do
+			let(:user) { FactoryBot.create(:member_user) }
+			let(:book) { FactoryBot.create(:book, copies_available: 1) }
+			let!(:borrow) { FactoryBot.create(:borrow, user: user, book: book, returned: false) }
+			let(:headers) { authorization_header(user) }
+			it "returns unauthorized" do
+				patch api_v1_return_book_path, params: {
+					book_id: book.id,
+					user_id: user.id
+				}, headers: headers
+
+				expect(response).to have_http_status(:forbidden)
+				expect(JSON.parse(response.body)['error']).to eq("You're not authorized!")
+			end
+		end
+	end
 end

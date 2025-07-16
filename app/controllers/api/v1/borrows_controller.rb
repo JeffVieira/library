@@ -13,6 +13,28 @@ module Api::V1
 			end
 		end
 
+		def update
+			@borrow = Borrow.where(book_id: params[:book_id], user_id: params[:user_id]).first
+
+			if @borrow.nil?
+				render json: { error: "Borrow record not found" }, status: :not_found
+				return
+			end
+
+			if @borrow.returned?
+				# mudar para o modelo?
+				render json: { error: "This book has already been returned" }, status: :unprocessable_entity
+				return
+			end
+
+			authorize @borrow
+			if @borrow.update({ returned: true })
+				render json: @borrow, status: :ok
+			else
+				render json: @borrow.errors, status: :unprocessable_entity
+			end
+		end
+
 		private
 			def borrow_params
 				params.permit(:user_id, :book_id, :returned, :borrow_date)

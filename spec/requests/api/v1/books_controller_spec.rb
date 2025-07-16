@@ -196,6 +196,19 @@ RSpec.describe Api::V1::BooksController, type: :request do
 
 				expect(response_json.length).to eq(0)
 			end
+
+			it "returns books filtered by search query" do
+				book1 = FactoryBot.create(:book, title: "Unique Book", author: "Author 1", genre: "Genre 1", isbn: "1234567890")
+				FactoryBot.create(:book, title: "Another Book", author: "Author 2", genre: "Genre 2", isbn: "0987654321")
+
+				get api_v1_books_path, params: { query: "Unique" }, headers: headers
+
+				expect(response).to have_http_status(:ok)
+				response_json = JSON.parse(response.body)
+
+				expect(response_json.length).to eq(1)
+				expect(response_json[0]['title']).to eq(book1.title)
+			end
 		end
 
 		context 'when user is not authenticated' do

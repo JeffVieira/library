@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
 	before_action :set_current_request_details
 	before_action :authenticate
 
-	def pundit_user
+	def current_user
 		Current.user
 	end
 

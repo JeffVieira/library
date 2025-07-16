@@ -9,7 +9,4 @@
     "editor.formatOnSave": true,
     "editor.tabSize": 2
 	},
-	"[yaml]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	}
 }

@@ -19,4 +19,10 @@ class User < ApplicationRecord
 	after_update if: :password_digest_previously_changed? do
 		sessions.where.not(id: Current.session).delete_all
 	end
+
+	scope :with_overdue_books, -> {
+		joins(:borrows)
+		.where("DATE(borrows.borrow_date, '+#{Constants::OVERDUE_DAYS} days') <= ?", Date.current)
+		.where("borrows.returned = ?", false).distinct
+	}
 end

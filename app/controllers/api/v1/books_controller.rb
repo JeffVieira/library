@@ -3,7 +3,7 @@ module Api::V1
 		before_action :authenticate
 
 		def index
-			@books = Book.all
+			@books = Book.search(search_params[:query])
 			render json: @books, status: :ok
 		end
 
@@ -46,6 +46,10 @@ module Api::V1
 		private
 			def book_params
 				params.permit(:title, :author, :isbn, :copies_available, :genre)
+			end
+
+			def search_params
+				params.permit(:query)
 			end
 	end
 end

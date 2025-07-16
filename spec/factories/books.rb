@@ -1,9 +1,9 @@
 FactoryBot.define do
 	factory :book do
-		title { 'Harry potter' }
-		author { 'J K Rowling' }
-		genre { 'Fantasy' }
-		isbn { '1' }
+		title { Faker::Book.title }
+		author { Faker::Book.author }
+		genre { Faker::Book.genre }
+		isbn { Faker::Code.isbn }
 		copies_available { 1 }
 	end
 end

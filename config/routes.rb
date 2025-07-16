@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :users
       resources :books
       resources :borrows, only: [:create]
+      resources :dashboards, only: [:index]
 
       patch "return_book", to: "borrows#update"
     end

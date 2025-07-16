@@ -104,12 +104,34 @@ RSpec.describe Book, type: :model do
 			expect(Book.borrowed).not_to include(book2)
 		end
 
+		it 'returns borrowed books by a specific user' do
+			user = FactoryBot.create(:user)
+			other_user = FactoryBot.create(:user)
+			borrowed_book = FactoryBot.create(:book, copies_available: 2)
+			FactoryBot.create(:borrow, book: borrowed_book, user: user, returned: false)
+			FactoryBot.create(:borrow, book: borrowed_book, user: other_user, returned: false)
+
+			expect(Book.borrowed_by(user)).to include(borrowed_book)
+			expect(Book.borrowed_by(user)).not_to include(other_user.books)
+		end
+
 		it 'returns overdue books' do
 			FactoryBot.create(:borrow, book: book1, borrow_date: Date.current - 15.days, returned: false)
 			FactoryBot.create(:borrow, book: book2, borrow_date: Date.current - 10.days, returned: false)
 
 			expect(Book.overdue).to include(book1)
 			expect(Book.overdue).not_to include(book2)
+		end
+
+		it 'returns overdue books for a specific user' do
+			user = FactoryBot.create(:user)
+			other_user = FactoryBot.create(:user)
+			overdue_book = FactoryBot.create(:book, copies_available: 2)
+			FactoryBot.create(:borrow, book: overdue_book, user: user, borrow_date: Date.current - 15.days, returned: false)
+			FactoryBot.create(:borrow, book: overdue_book, user: other_user, borrow_date: Date.current - 15.days, returned: false)
+
+			expect(Book.overdue_by(user)).to include(overdue_book)
+			expect(Book.overdue_by(user)).not_to include(other_user.books)
 		end
 	end
 end

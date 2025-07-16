@@ -24,8 +24,8 @@ module Api::V1
 
 			def member_dashboard_data
 				{
-					books_borrowed: current_user.books.borrowed,
-					books_overdue: current_user.books.overdue
+					books_borrowed: Book.borrowed_by(current_user),
+					books_overdue: Book.overdue_by(current_user)
 				}
 			end
 	end

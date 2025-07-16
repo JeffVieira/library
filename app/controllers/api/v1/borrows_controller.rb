@@ -22,7 +22,6 @@ module Api::V1
 			end
 
 			if @borrow.returned?
-				# mudar para o modelo?
 				render json: { error: "This book has already been returned" }, status: :unprocessable_entity
 				return
 			end
@@ -37,7 +36,7 @@ module Api::V1
 
 		private
 			def borrow_params
-				params.permit(:user_id, :book_id, :returned, :borrow_date)
+				params.permit(:book_id).merge({ user_id: current_user.id })
 			end
 	end
 end

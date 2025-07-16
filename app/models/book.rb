@@ -16,9 +16,19 @@ class Book < ApplicationRecord
 		.where("borrows.returned = ?", false)
 	}
 
+	scope :overdue_by, ->(user) {
+		overdue
+		.where("borrows.user_id = ?", user.id)
+	}
+
 	scope :borrowed, -> {
 		joins(:borrows)
 		.where("borrows.returned = ?", false)
+	}
+
+	scope :borrowed_by, ->(user) {
+		borrowed
+		.where("borrows.user_id = ?", user.id)
 	}
 
 	scope :search, ->(query) {

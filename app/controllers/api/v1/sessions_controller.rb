@@ -17,6 +17,8 @@ module Api::V1
 			# ver aqui para ver se é necessário o reset do pundit
 			pundit_reset!
 			Current.session.destroy
+
+			render json: { message: "Logout successful." }, status: :ok
 		end
 	end
 end

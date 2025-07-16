@@ -2,8 +2,28 @@
 # development, test). The code here should be idempotent so that it can be executed at any point in every environment.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+
+User.create(email: "admin@mail.com", password: "Adminpass123", password_confirmation: "Adminpass123", role: "admin")
+
+member = User.create(email: "member@mail.com", password: "Memberpass123", password_confirmation: "Memberpass123", role: "member")
+
+# Create some books
+50.times do |i|
+  Book.create(
+    title: Faker::Book.title + " #{i + 1}",
+    author: Faker::Book.author,
+    genre: ["Fiction", "Non-Fiction", "Science", "History", "Romance"].sample,
+    isbn: Faker::Code.isbn + i.to_s,
+    copies_available: rand(1..5)
+  )
+end
+
+# Create some borrows
+Book.all.sample(rand(1..20)).each do |book|
+  Borrow.create(
+    user: member,
+    book: book,
+    borrow_date: Date.current - rand(1..30),
+    returned: [true, false].sample
+  )
+end

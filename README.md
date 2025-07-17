@@ -4,6 +4,10 @@ This is a Ruby on Rails-based Library Management System that allows users to bor
 
 ---
 
+## 📄 Thought Process
+
+You can read about my development approach and decisions [here](./THOUGHT_PROCESS.md).
+
 ## Features
 
 - **Admin Dashboard**:

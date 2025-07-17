@@ -25,7 +25,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_16_130719) do
     t.integer "user_id"
     t.integer "book_id"
     t.boolean "returned", default: false
-    t.datetime "borrow_date"
+    t.datetime "due_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_borrows_on_book_id"
@@ -44,7 +44,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_16_130719) do
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
-    t.boolean "verified", default: false, null: false
+    t.boolean "verified", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "role", default: "member"

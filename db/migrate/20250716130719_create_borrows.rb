@@ -4,7 +4,7 @@ class CreateBorrows < ActiveRecord::Migration[8.0]
       t.belongs_to :user
       t.belongs_to :book
       t.boolean :returned, default: false
-      t.datetime :borrow_date
+      t.datetime :due_date
 
       t.timestamps
     end

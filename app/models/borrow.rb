@@ -4,12 +4,17 @@ class Borrow < ApplicationRecord
 
 	validates :user, presence: true, uniqueness: { scope: :book, message: "can only borrow the book one time" }
 	validates :book, presence: true
-	validates :borrow_date, presence: true
+	validates :due_date, presence: true
 	validates :returned, inclusion: { in: [true, false] }
 
 	validate :validate_book_availability
 
-	before_validation :set_borrow_date, on: :create
+	before_validation :set_due_date, on: :create
+
+
+	scope :borrowed, -> { where(returned: false) }
+	scope :due_today, -> { borrowed.where("DATE(borrows.due_date) = ?", Date.current) }
+	scope :overdue, -> { borrowed.where("DATE(due_date) < ?", Date.today) }
 
 	def validate_book_availability
 		return if book.nil?
@@ -21,7 +26,7 @@ class Borrow < ApplicationRecord
 
 	private
 
-		def set_borrow_date
-			self.borrow_date ||= Time.current
+		def set_due_date
+			self.due_date ||= Time.current + Constants::BORROW_DURATION.days
 		end
 end

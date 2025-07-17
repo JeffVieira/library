@@ -9,27 +9,22 @@ RSpec.describe Api::V1::BorrowsController, type: :request do
 
 			it "creates a borrow successfully" do
 				post api_v1_borrows_path, params: {
-					user_id: user.id,
-					book_id: book.id,
-					borrow_date: Time.current
+					book_id: book.id
 				}, headers: headers
 
 				expect(response).to have_http_status(:created)
 				expect(JSON.parse(response.body)['user_id']).to eq(user.id)
 				expect(JSON.parse(response.body)['book_id']).to eq(book.id)
 				expect(JSON.parse(response.body)['returned']).to eq(false)
-				expect(JSON.parse(response.body)['borrow_date']).to be_present
+				expect(JSON.parse(response.body)['due_date']).to be_present
 			end
 
 			it "returns unprocessable entity when params are invalid" do
 				post api_v1_borrows_path, params: {
-					user_id: nil,
-					book_id: nil,
-					borrow_date: Time.current
+					book_id: nil
 				}, headers: headers
 
 				expect(response).to have_http_status(:unprocessable_entity)
-				expect(JSON.parse(response.body)['user']).to include("must exist")
 				expect(JSON.parse(response.body)['book']).to include("must exist")
 			end
 		end
@@ -37,9 +32,7 @@ RSpec.describe Api::V1::BorrowsController, type: :request do
 		context 'when user is not authenticated' do
 			it "returns unauthorized" do
 				post api_v1_borrows_path, params: {
-					user_id: 1,
-					book_id: 1,
-					borrow_date: Time.current
+					book_id: 1
 				}
 
 				expect(response).to have_http_status(:unauthorized)

@@ -8,27 +8,17 @@ class Book < ApplicationRecord
 	validates :copies_available, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 	validates :genre, presence: true, length: { minimum: 3 }
 
-	scope :due_today, -> { joins(:borrows).where("DATE(borrows.borrow_date, '+#{Constants::OVERDUE_DAYS} days') = ?", Date.current) }
+	scope :due_today, -> { joins(:borrows).where("DATE(borrows.due_date) = ?", Date.current).where("borrows.returned = ?", false) }
 
 	scope :overdue, -> {
 		joins(:borrows)
-		.where("DATE(borrows.borrow_date, '+#{Constants::OVERDUE_DAYS} days') < ?", Date.current)
+		.where("DATE(borrows.due_date) < ?", Date.current)
 		.where("borrows.returned = ?", false)
-	}
-
-	scope :overdue_by, ->(user) {
-		overdue
-		.where("borrows.user_id = ?", user.id)
 	}
 
 	scope :borrowed, -> {
 		joins(:borrows)
 		.where("borrows.returned = ?", false)
-	}
-
-	scope :borrowed_by, ->(user) {
-		borrowed
-		.where("borrows.user_id = ?", user.id)
 	}
 
 	scope :search, ->(query) {

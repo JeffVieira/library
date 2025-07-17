@@ -67,4 +67,37 @@ RSpec.describe Borrow, type: :model do
 			expect(borrow.errors[:book]).to be_empty
 		end
 	end
+
+	context 'Scope' do
+		it 'returns borrows with returned false' do
+			borrow1 = FactoryBot.create(:borrow, returned: false)
+			borrow2 = FactoryBot.create(:borrow, returned: false)
+			borrow3 = FactoryBot.create(:borrow, returned: true)
+
+			expect(Borrow.borrowed.length).to eq(2)
+			expect(Borrow.borrowed).to include(borrow1, borrow2)
+			expect(Borrow.borrowed).not_to include(borrow3)
+		end
+
+		it 'returns borrows with due_date equals today' do
+			borrow1 = FactoryBot.create(:borrow, returned: false, due_date: Date.today)
+			borrow2 = FactoryBot.create(:borrow, returned: false, due_date: 5.days.ago)
+			borrow3 = FactoryBot.create(:borrow, returned: true, due_date: Date.today)
+
+			expect(Borrow.due_today.length).to eq(1)
+			expect(Borrow.due_today).to include(borrow1)
+			expect(Borrow.due_today).not_to include(borrow2, borrow3)
+		end
+
+		it 'returns overdues borrows' do
+			borrow1 = FactoryBot.create(:borrow, returned: false, due_date: Date.today + 5.days)
+			borrow2 = FactoryBot.create(:borrow, returned: false, due_date: 5.days.ago)
+			borrow3 = FactoryBot.create(:borrow, returned: true, due_date: Date.today + 5.days)
+			borrow4 = FactoryBot.create(:borrow, returned: true, due_date: 5.days.ago)
+
+			expect(Borrow.overdue.length).to eq(1)
+			expect(Borrow.overdue).to include(borrow2)
+			expect(Borrow.overdue).not_to include(borrow1, borrow3, borrow4)
+		end
+	end
 end

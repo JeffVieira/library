@@ -1,3 +1,3 @@
 module Constants
-	OVERDUE_DAYS = 14.freeze
+	BORROW_DURATION = 14.freeze
 end

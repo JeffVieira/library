@@ -35,13 +35,13 @@ RSpec.describe User, type: :model do
 			let(:book) { FactoryBot.create(:book, copies_available: 1) }
 
 			it 'returns users with overdue books' do
-				FactoryBot.create(:borrow, user: user, book: book, borrow_date: 15.days.ago, returned: false)
+				FactoryBot.create(:borrow, user: user, book: book, due_date: 15.days.ago, returned: false)
 
 				expect(User.with_overdue_books).to include(user)
 			end
 
 			it 'does not return users without overdue books' do
-				FactoryBot.create(:borrow, user: user, book: book, borrow_date: 5.days.ago, returned: false)
+				FactoryBot.create(:borrow, user: user, book: book, due_date: Date.current + 5.days, returned: false)
 
 				expect(User.with_overdue_books).not_to include(user)
 			end
